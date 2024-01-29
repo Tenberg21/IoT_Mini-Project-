@@ -28,6 +28,7 @@ The database was implemented using sqlite3, and the graphical presentation of da
 ## IOT
 #### Node
 #### Border Router
+The border router functionality was implemented using the unmodified RIOT-OS example located at "examples/gnrc_border_router." This example was deemed sufficient for the task.
 _____________________
 ## CLOUD
 ####  AWS Cloud configuration
