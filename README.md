@@ -26,7 +26,7 @@ The software components include Cloud software, NODE software, and borderrouter 
 The cloud server, running on AWS cloud service with an Ubuntu image. The main concept involved the node registering itself to the server, following which the server would initiate requests for data and maintain a database of all registered nodes. The acutall implementation, while basic, serves as a demonstration of the core idea. Although it features minimal functionality, the "pipeline" is complete, ensuring that data travels from the node to the cloud server database and is visually presented.
 
 The database was implemented using sqlite3, and the graphical presentation of data was achieved through Grafana.
-## IOT
+## IOT Testbed
 #### Node
 Node firmware was assembled by combining and adapting elements from the RIOT-OS course material examples. The firmware in this repository is not fully utilized, with a significant portion of its functionality left unused. However, this design choice allows for flexibility and leaves room for improvement, which can be implemented on the server side only if required.
 #### Border Router
