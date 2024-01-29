@@ -40,6 +40,9 @@ Outbound/Inbound configuration
 #### COAP Server
 sudo apt-get install
 
+Using the COAP-server script, I tried to work around my challenges with FIT IoT-LAB and RIOT-OS. This resulted in a system where the server actively polls the node for data, rather than the other way around.
+The implementation could probably be easily improved. For example, after the node registers with the server, it could wait for the server to specify the polling frequency it wants from the node. Then, the node could be put to sleep during most of the time and only wake up to send the data.
+
 #### SQLite
 sudo apt-get install
 #### Grafana
