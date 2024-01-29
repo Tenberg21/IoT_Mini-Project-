@@ -34,6 +34,13 @@ The border router functionality was implemented using the unmodified RIOT-OS exa
 _____________________
 ## CLOUD
 ####  AWS Cloud configuration
+IPV6 configuration
+Outbound/Inbound configuration
+
 #### COAP Server
+sudo apt-get install
+
 #### SQLite
+sudo apt-get install
 #### Grafana
+sudo apt-get install
