@@ -4,6 +4,7 @@
 # Video demo: 
 https://unioulu-my.sharepoint.com/:v:/g/personal/tenberg21_student_oulu_fi/EY80TRzjA71Js9gbGk_jg_wB4AnAYqz61j8T1vGMBA0uAQ?e=sisSUE
 Video description:
+
 **Before the Video:**
 - The IOT-testbench experiment has commenced with 2 M3 nodes.
 - Firmware for both the Client and Border Router has been successfully flashed.
