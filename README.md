@@ -28,6 +28,7 @@ The cloud server, running on AWS cloud service with an Ubuntu image. The main co
 The database was implemented using sqlite3, and the graphical presentation of data was achieved through Grafana.
 ## IOT
 #### Node
+Node firmware was assembled by combining and adapting elements from the RIOT-OS course material examples. The firmware in this repository is not fully utilized, with a significant portion of its functionality left unused. However, this design choice allows for flexibility and leaves room for improvement, which can be implemented on the server side only if required.
 #### Border Router
 The border router functionality was implemented using the unmodified RIOT-OS example located at "examples/gnrc_border_router." This example was deemed sufficient for the task.
 _____________________
