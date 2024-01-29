@@ -27,6 +27,7 @@ The cloud server, running on AWS cloud service with an Ubuntu image. The main co
 
 The database was implemented using sqlite3, and the graphical presentation of data was achieved through Grafana.
 ## IOT Testbed
+IOT testbed shell commands are executed based on the provided cheat sheet.
 #### Node
 Node firmware was assembled by combining and adapting elements from the RIOT-OS course material examples. The firmware in this repository is not fully utilized, with a significant portion of its functionality left unused. However, this design choice allows for flexibility and leaves room for improvement, which can be implemented on the server side only if required.
 #### Border Router
