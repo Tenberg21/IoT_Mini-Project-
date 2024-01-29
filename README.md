@@ -24,7 +24,8 @@ Video description:
 #### Node
 #### Border Router
 _____________________
-## AWS
+## CLOUD
+####  AWS Cloud configuration
 #### COAP Server
 #### SQLite
 #### Grafana
