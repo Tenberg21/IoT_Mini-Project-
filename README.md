@@ -49,8 +49,9 @@ Using the COAP-server script, I tried to work around my challenges with FIT IoT-
 The implementation could probably be easily improved. For example, after the node registers with the server, it could wait for the server to specify the polling frequency it wants from the node. Then, the node could be put to sleep during most of the time and only wake up to send the data.
 
 Nessecary non python3 standard libraries for the script:
+```bash
 pip3 install aiocoap
-
+```
 #### SQLite
 For storing IoT node values, SQLite3 was utilized, employing the following database model:
 
@@ -68,4 +69,14 @@ sudo chmod 755 /opt/grafana_shared/
 sudo chmod -R u+w /opt/grafana_shared/
 ```
 #### Grafana
-sudo apt-get install
+
+To install Grafana these commands were used:
+```bash
+sudo apt-get install -y software-properties-common
+sudo add-apt-repository "deb https://packages.grafana.com/oss/deb stable main"
+sudo wget -q -O - https://packages.grafana.com/gpg.key | sudo apt-key add -
+sudo apt-get update
+sudo apt-get install -y grafana
+sudo systemctl start grafana-server
+sudo systemctl enable grafana-server
+```
