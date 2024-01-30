@@ -35,8 +35,13 @@ The border router functionality was implemented using the unmodified RIOT-OS exa
 _____________________
 ## CLOUD
 ####  AWS Cloud configuration
-IPV6 configuration
-Outbound/Inbound configuration
+An AWS EC2 instance was selected and configured with an Ubuntu Linux image. IPv6 addressing was implemented for the instance, following a guide that, while mostly up-to-date, had some discrepancies with the current version of AWS. The guide used for setting up IPv6 addressing can be found at: https://4sysops.com/archives/assign-an-ipv6-address-to-an-ec2-instance-dual-stack/
+Subsequently, inbound and outbound addresses were assigned to facilitate the passage of COAP messages and to make Grafana accessible from outside the machine. The following rules were applied, based on the guide:
+Inbound/Outbound Rules:
+    5300-5500 UDP for ::/0 to allow COAP communication
+    3000 TCP 0.0.0.0/0 for Grafana access
+
+
 
 #### COAP Server
 sudo apt-get install
