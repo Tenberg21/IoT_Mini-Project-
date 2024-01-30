@@ -80,3 +80,16 @@ sudo apt-get install -y grafana
 sudo systemctl start grafana-server
 sudo systemctl enable grafana-server
 ```
+
+The default port for Grafana, 3000, was utilized. 
+
+The Grafana web interface was accessible through the server's IPV6 address, followed by ":3000," using a web browser.
+
+
+A straightforward time series dashboard was employed to retrieve data from the SQLite database, using the following query as the data source:
+```SQL
+SELECT strftime('%s', Timestamp) AS time, Temperature AS value
+FROM temperature_data
+WHERE Timestamp >= datetime('now', '-2 hours')
+ORDER BY time;
+```
