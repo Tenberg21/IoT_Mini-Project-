@@ -27,7 +27,43 @@ The cloud server, running on AWS cloud service with an Ubuntu image. The main co
 
 The database was implemented using sqlite3, and the graphical presentation of data was achieved through Grafana.
 ## IOT Testbed
-IOT testbed shell commands are executed based on the provided cheat sheet.
+IOT testbed was instrumentized with shell commands found on the iot_testlab_cheatsheet.txt as follows:
+```bash
+//env setup
+git clone https://github.com/RIOT-OS/RIOT.git -b 2020.10-branch //Right version for all the documentation & Material
+
+
+
+//Experiment
+
+//Client & BorderRouter start experiment
+// In directory /RIOT
+iotlab-experiment submit -n riot_m3 -d 300 -l 2,archi=m3:at86rf231+site=grenoble    //Start experiment with 2 nodes
+iotlab-experiment wait --timeout 30 --cancel-on-timeout                             //Query for ready nodes 
+iotlab-experiment --jmespath="items[*].network_address | sort(@)" get --nodes       //Query for node ids
+
+//BorderRouter
+
+source /opt/riot.source 
+make ETHOS_BAUDRATE=500000 DEFAULT_CHANNEL=15 BOARD=iotlab-m3 -C examples/gnrc_border_router clean all
+iotlab-node --flash examples/gnrc_border_router/bin/iotlab-m3/gnrc_border_router.elf -l grenoble,m3,102 // m3,[Nodeid]
+ip -6 route                                 //Check free taps & adrresses
+sudo ethos_uhcpd.py m3-102 tap2 2001:660:5307:3140::/64                                                 // m3-[Nodeid]
+
+//Client
+// ONE THE SAME: CHANNEL,SITE as router
+// IN directory /mini_project_1/code
+
+source /opt/riot.source
+make ETHOS_BAUDRATE=500000 DEFAULT_CHANNEL=15 IOTLAB_NODE=m3-95 flash                                  // m3-[Nodeid]
+make ETHOS_BAUDRATE=500000 DEFAULT_CHANNEL=15 IOTLAB_NODE=m3-95 -C . term                              // m3-[Nodeid]
+
+
+//ON client terminal
+
+coap put [SERVER IPV6 ADDR] 5432 /node_info [NODES IPV6 ADDR]
+```
+
 #### Node
 Node firmware was assembled by combining and adapting elements from the RIOT-OS course material examples. The firmware in this repository is not fully utilized, with a significant portion of its functionality left unused. However, this design choice allows for flexibility and leaves room for improvement, which can be implemented on the server side only if required.
 #### Border Router
