@@ -51,8 +51,21 @@ The implementation could probably be easily improved. For example, after the nod
 Nessecary non python3 standard libraries for the script:
 pip3 install aiocoap
 
-
 #### SQLite
-sudo apt-get install
+For storing IoT node values, SQLite3 was utilized, employing the following database model:
+
+
+| ID | Temperature | Timestamp | IPv6Addr |
+|----|-------------|-----------|----------|
+|    |             |           |          |
+
+Adjusting R/W access for the database file to be accessible by the ubuntu user and grafana user:
+
+```bash
+sudo chown -R grafana:grafana /opt/grafana_shared
+sudo chown -R ubuntu:ubuntu /opt/grafana_shared/
+sudo chmod 755 /opt/grafana_shared/
+sudo chmod -R u+w /opt/grafana_shared/
+```
 #### Grafana
 sudo apt-get install
