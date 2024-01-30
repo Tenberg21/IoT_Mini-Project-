@@ -27,7 +27,7 @@ The cloud server, running on AWS cloud service with an Ubuntu image. The main co
 
 The database was implemented using sqlite3, and the graphical presentation of data was achieved through Grafana.
 ## IOT Testbed
-IOT testbed was instrumentized with shell commands found on the iot_testlab_cheatsheet.txt as follows:
+IOT testbed was instrumentized with SSH and shell commands found on the iot_testlab_cheatsheet.txt as follows:
 ```bash
 //env setup
 git clone https://github.com/RIOT-OS/RIOT.git -b 2020.10-branch //Right version for all the documentation & Material
