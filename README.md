@@ -59,14 +59,16 @@ make ETHOS_BAUDRATE=500000 DEFAULT_CHANNEL=15 IOTLAB_NODE=m3-95 flash           
 make ETHOS_BAUDRATE=500000 DEFAULT_CHANNEL=15 IOTLAB_NODE=m3-95 -C . term                              // m3-[Nodeid]
 
 
-//ON client terminal
+//ON client terminal to register node to server
 
 coap put [SERVER IPV6 ADDR] 5432 /node_info [NODE IPV6 ADDR]
-```
 
 NODE IPV6 ADDR is attained with ifconfig command
-
 SERVER IPV6 ADDR can be copied from AWS instance details or terminal wellcome message.
+
+```
+
+
 
 #### Node
 Node firmware was assembled by combining and adapting elements from the RIOT-OS course material examples. The firmware in this repository is not fully utilized, with a significant portion of its functionality left unused. However, this design choice allows for flexibility and leaves room for improvement, which can be implemented on the server side only if required.
