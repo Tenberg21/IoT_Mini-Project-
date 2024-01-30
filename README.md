@@ -94,6 +94,13 @@ Nessecary non python3 standard libraries for the script:
 ```bash
 pip3 install aiocoap
 ```
+Script assumes the port to be 5432 and database in /opt/grafana_shared/temperature_data.db
+
+
+To run the server:
+```bash
+ python3 coap_req.py
+```
 #### SQLite
 For storing IoT node values, SQLite3 was utilized, employing the following database model:
 
