@@ -1,0 +1,36 @@
+//env setup
+git clone https://github.com/RIOT-OS/RIOT.git -b 2020.10-branch //Right version for all the documentation & Material
+
+
+
+//Experiment
+
+//Client & BorderRouter start experiment
+// In directory /RIOT
+iotlab-experiment submit -n riot_m3 -d 300 -l 2,archi=m3:at86rf231+site=grenoble    //Start experiment with 2 nodes
+iotlab-experiment wait --timeout 30 --cancel-on-timeout                             //Query for ready nodes 
+iotlab-experiment --jmespath="items[*].network_address | sort(@)" get --nodes       //Query for node ids
+
+//BorderRouter
+
+source /opt/riot.source 
+make ETHOS_BAUDRATE=500000 DEFAULT_CHANNEL=15 BOARD=iotlab-m3 -C examples/gnrc_border_router clean all
+iotlab-node --flash examples/gnrc_border_router/bin/iotlab-m3/gnrc_border_router.elf -l grenoble,m3,102 // m3,[Nodeid]
+ip -6 route                                 //Check free taps & adrresses
+sudo ethos_uhcpd.py m3-102 tap2 2001:660:5307:3140::/64                                                 // m3-[Nodeid]
+
+//Client
+// ONE THE SAME: CHANNEL,SITE as router
+// IN directory /mini_project_1/code
+
+source /opt/riot.source
+make ETHOS_BAUDRATE=500000 DEFAULT_CHANNEL=15 IOTLAB_NODE=m3-95 flash                                  // m3-[Nodeid]
+make ETHOS_BAUDRATE=500000 DEFAULT_CHANNEL=15 IOTLAB_NODE=m3-95 -C . term                              // m3-[Nodeid]
+
+
+//ON client terminal to register node to server
+
+coap put [SERVER IPV6 ADDR] 5432 /node_info [NODE IPV6 ADDR]
+
+NODE IPV6 ADDR is attained with ifconfig command
+SERVER IPV6 ADDR can be copied from AWS instance details or terminal wellcome message.

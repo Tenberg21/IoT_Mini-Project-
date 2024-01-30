@@ -1,0 +1,115 @@
+import asyncio
+from aiocoap import Context, resource, Message, GET, Code
+import sqlite3
+from datetime import datetime
+
+class CoapHandler:
+    def __init__(self):
+        self.ipv6_address = None
+        self.ipv6_event = asyncio.Event()
+
+    async def handle_node_info(self, request):
+        if request.code == Code.PUT:
+            payload = request.payload.decode('utf-8').strip()
+
+            # Print the received node information
+            if payload:
+                print(f"Received node info - IPv6: {payload}")
+
+                # Set the IPV6 address
+                self.ipv6_address = payload
+                self.ipv6_event.set()  # Set the event to signal that we have the IPV6 address
+
+                # Request temperature from the node
+                await self.request_temperature()
+
+            else:
+                print("Received empty node info")
+
+            return Message(code=Code.CHANGED, payload=b'Node info received successfully')
+        else:
+            return Message(code=Code.METHOD_NOT_ALLOWED, payload=b'Only PUT method is allowed for node_info')
+
+    async def request_temperature(self):
+        # Set the CoAP endpoint
+        endpoint = f"coap://[{self.ipv6_address}]:5683/temperature"
+
+        # Create a CoAP GET request
+        request = Message(code=GET, uri=endpoint)
+
+        try:
+            # Create the CoAP client context
+            context = await Context.create_client_context()
+
+            # Send the request and wait for the response
+            response = await context.request(request).response
+
+            # Check if the response was successful (2.05 Content)
+            if response.code == Code.CONTENT:
+                # Decode and print the received payload (temperature value)
+                temperature_str = response.payload.decode('utf-8')
+                temperature_value = float(temperature_str.split('°C')[0])
+                print(f"Received temperature value from node {self.ipv6_address}: {temperature_value}°C")
+
+                # Add data to the database
+                self.add_to_database(temperature_value)
+
+            else:
+                print(f"Error: {response.code} - {response.payload}")
+
+        except Exception as e:
+            print(f"Error: {e}")
+
+    def add_to_database(self, temperature):
+        try:
+            # Connect to the SQLite database
+            conn = sqlite3.connect('/opt/grafana_shared/temperature_data.db')
+            cursor = conn.cursor()
+
+            # Get the current timestamp
+            timestamp = datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')
+
+            # Insert data into the table
+            cursor.execute("INSERT INTO temperature_data (Temperature, Timestamp, IPv6Addr) VALUES (?, ?, ?)",
+                           (temperature, timestamp, self.ipv6_address))
+
+            # Commit the changes and close the connection
+            conn.commit()
+            conn.close()
+
+            print("Data added to the database.")
+
+        except Exception as e:
+            print(f"Error adding data to the database: {e}")
+
+    async def poll_temperature(self, interval):
+        # Wait until the IPV6 address is received
+        await self.ipv6_event.wait()
+
+        while True:
+            await asyncio.sleep(interval)
+            await self.request_temperature()
+
+async def main():
+    # Create CoAP server to handle node information
+    site = resource.Site()
+    coap_handler = CoapHandler()
+    node_info_resource = resource.Resource()
+    node_info_resource.render_put = coap_handler.handle_node_info
+    site.add_resource(('node_info',), node_info_resource)
+
+    # Start the CoAP server in the background on port 5432
+    server_context = await Context.create_server_context(site, bind=("::", 5432))
+
+    # Start the polling for temperature
+    asyncio.create_task(coap_handler.poll_temperature(5))
+
+    try:
+        # Wait for an awaitable object, e.g., asyncio.Event().wait()
+        await asyncio.Event().wait()
+
+    except KeyboardInterrupt:
+        print("Stopping the CoAP server and exiting.")
+
+if __name__ == "__main__":
+    asyncio.run(main())
